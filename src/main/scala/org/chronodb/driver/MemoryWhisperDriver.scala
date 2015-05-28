@@ -27,9 +27,7 @@ class MemoryWhisperDriver extends Driver {
           Aggregator(aggregator) match {
             case None => Failure(new Exception(s"Invalid aggregator '$aggregator'."))
             case Some(agg) =>
-              tables(name) = {
-                new Table(name, agg, size, baseRes, backoffFactors)
-              }
+              tables(name) = new Table(name, agg, size, baseRes, backoffFactors)
               Success(())
           }
       }
