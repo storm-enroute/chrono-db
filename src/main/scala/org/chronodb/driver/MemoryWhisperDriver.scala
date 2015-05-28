@@ -13,10 +13,11 @@ import scala.util.Try
 class MemoryWhisperDriver extends Driver {
   import MemoryWhisperDriver._
   
+  private val lock = new AnyRef
   private val tables = mutable.Map[String, Table]()
 
   def create(name: String, aggregator: String, size: Int, baseRes: Long,
-    backoffFactors: Seq[Int]): Try[Unit] = {
+    backoffFactors: Seq[Int]): Try[Unit] = lock.synchronized {
     val result = for {
       _ <- QueryEngine.validateTableName(name)
     } yield {
