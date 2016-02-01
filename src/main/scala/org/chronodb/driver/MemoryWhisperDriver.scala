@@ -17,7 +17,7 @@ class MemoryWhisperDriver extends Driver {
   private val tables = mutable.Map[String, Table]()
   private val success = Success(())
 
-  def create(name: String, aggregator: String, size: Int, baseRes: Long,
+  def create(target: String, aggregator: String, size: Int, baseRes: Long,
     backoffFactors: Seq[Int]): Try[Unit] = {
     val props = List(
       "aggregator" -> aggregator,
@@ -25,10 +25,10 @@ class MemoryWhisperDriver extends Driver {
       "base-resolution" -> baseRes,
       "backoff-factors" -> backoffFactors
     )
-    create(name, props: _*)
+    create(target, props: _*)
   }
 
-  def create(name: String, props: (String, Any)*): Try[Unit] = lock.synchronized {
+  def create(target: String, props: (String, Any)*): Try[Unit] = lock.synchronized {
     val propmap = props.toMap
     val aggregator = propmap("aggregator").asInstanceOf[String]
     val size = propmap("size").asInstanceOf[Int]
@@ -36,16 +36,16 @@ class MemoryWhisperDriver extends Driver {
     val backoffFactors = propmap("backoff-factors").asInstanceOf[Seq[Int]]
 
     val result = for {
-      _ <- QueryEngine.validateTableName(name)
+      _ <- QueryEngine.validateTableName(target)
     } yield {
-      tables.get(name) match {
+      tables.get(target) match {
         case Some(table) =>
-          Failure(new Exception(s"Table '$name' already exists."))
+          Failure(new Exception(s"Table '$target' already exists."))
         case None =>
           Aggregator(aggregator) match {
             case None => Failure(new Exception(s"Invalid aggregator '$aggregator'."))
             case Some(agg) =>
-              tables(name) = new Table(name, agg, size, baseRes, backoffFactors)
+              tables(target) = new Table(target, agg, size, baseRes, backoffFactors)
               Success(())
           }
       }
@@ -53,12 +53,12 @@ class MemoryWhisperDriver extends Driver {
     result.flatten
   }
 
-  def insert(name: String, timestamp: Long, value: Double): Try[Unit] = {
-    tables.get(name) match {
+  def insert(target: String, timestamp: Long, value: Double): Try[Unit] = {
+    tables.get(target) match {
       case Some(table) =>
         ???
       case None =>
-        Failure(new Exception(s"Table '$name' does not exist."))
+        Failure(new Exception(s"Table '$target' does not exist."))
     }
   }
 }
