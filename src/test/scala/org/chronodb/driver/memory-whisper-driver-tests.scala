@@ -14,17 +14,20 @@ class MemoryWhisperDriverSpec extends FunSuite with Matchers {
 
   test("Must create table") {
     val driver = new MemoryWhisperDriver
-    driver.create("table", "avg", 16, 1000, Seq(2)) should equal (Success(()))
+    val result = driver.create("table", "avg", 16, 1000, Seq(2))
+    result should equal (Success(()))
   }
 
   test("Must fail due to bad table name") {
     val driver = new MemoryWhisperDriver
-    driver.create("1table", "avg", 16, 1000, Seq(2)) shouldBe a [Failure[_]]
+    val result = driver.create("1table", "avg", 16, 1000, Seq(2))
+    result shouldBe a [Failure[_]]
   }
 
   test("Must fail due to invalid aggregator") {
     val driver = new MemoryWhisperDriver
-    driver.create("table", "432rfdas", 16, 1000, Seq(2)) shouldBe a [Failure[_]]
+    val result = driver.create("table", "432rfdas", 16, 1000, Seq(2))
+    result shouldBe a [Failure[_]]
   }
 
 }
