@@ -51,6 +51,7 @@ object ChronoDbBuild extends MechaRepoBuild {
       "Sonatype OSS Releases" at
         "https://oss.sonatype.org/content/repositories/releases"
     ),
+    ivyLoggingLevel in ThisBuild := UpdateLogging.Quiet,
     publishMavenStyle := true,
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
