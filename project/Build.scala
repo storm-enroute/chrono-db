@@ -90,7 +90,7 @@ object ChronoDbBuild extends MechaRepoBuild {
   def dependencies(scalaVersion: String) =
     CrossVersion.partialVersion(scalaVersion) match {
     case Some((2, major)) if major >= 11 => Seq(
-      "org.scalatest" % "scalatest_2.11" % "2.1.7" % "test"
+      "org.scalatest" % "scalatest_2.11" % "2.2.6" % "test"
     )
     case Some((2, 10)) => Seq(
       "org.scalatest" % "scalatest_2.10" % "2.1.0" % "test"
