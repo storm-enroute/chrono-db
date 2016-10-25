@@ -31,8 +31,7 @@ object ChronoDbBuild extends MechaRepoBuild {
     chronoDbCrossScalaVersions.value.head
   }
 
-  val chronoDbSettings = Defaults.defaultSettings ++
-    MechaRepoPlugin.defaultSettings ++ Seq(
+  val chronoDbSettings = MechaRepoPlugin.defaultSettings ++ Seq(
     name := "chrono-db",
     organization := "com.storm-enroute",
     version <<= frameworkVersion,
